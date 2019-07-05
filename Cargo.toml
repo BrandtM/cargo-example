@@ -1,0 +1,12 @@
+[package]
+name = "cargo-example"
+version = "0.1.0"
+authors = ["BrandtM <marius.brandt@hotmail.com>"]
+edition = "2018"
+
+[dependencies]
+reqwest = "0.9"
+clap = "2.33"
+serde = { version = "1.0", features = ["derive"]}
+serde_json = "1.0"
+git2 = "0.9"
