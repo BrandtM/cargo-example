@@ -3,7 +3,7 @@ mod error;
 
 use response::*;
 use error::*;
-use clap::{Arg, App};
+use clap::{Arg, App, Values};
 use git2::Repository;
 use std::fs::DirBuilder;
 use std::process::Command;
@@ -15,9 +15,12 @@ fn main() {
 		.arg(Arg::with_name("project")
 			.required(true)
 			.index(1))
+		.arg(Arg::with_name("additional_args")
+			.multiple(true))
 		.get_matches();
 
 	let project = matches.value_of("project").unwrap();
+	let example_args: Vec<&str> = matches.values_of("additional_args").unwrap_or(Values::default()).collect();
 
 	let request_url = format!("https://crates.io/api/v1/crates/{}", project);
 	let crates_response = reqwest::get(&request_url).unwrap().text().unwrap();
@@ -51,6 +54,7 @@ fn main() {
 	let output = Command::new("cargo")
 		.arg("run")
 		.arg("--example")
+		.args(&example_args)
 		.current_dir(example_path)
 		.output()
 		.unwrap();
