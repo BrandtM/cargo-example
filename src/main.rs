@@ -6,7 +6,33 @@ use error::*;
 use clap::{Arg, App, Values};
 use git2::Repository;
 use std::fs::DirBuilder;
+use std::path::Path;
 use std::process::{Command, Stdio};
+
+/// Represent the kinds of cache errors that could occur.
+/// Allows for granular control
+#[derive(Debug)]
+enum CacheError {
+	NotFound,
+	BrokenState
+}
+
+/// Attempt to load a crate from the local filesystem
+/// Will fail if:
+/// - the directory doesn't exist
+/// - the directory exists but there's no git repo inside of it
+fn try_load_from_cache(crate_name: &str) -> Result<Repository, CacheError> {
+	let crate_path = format!("{}/.cargo-example/{}", env!("CARGO_HOME"), crate_name);
+	
+	if Path::new(&crate_path).exists() {
+		return match Repository::open(crate_path) {
+			Ok(repo) => Ok(repo),
+			Err(_) => Err(CacheError::BrokenState)
+		};
+	} 
+	
+	Err(CacheError::NotFound)
+}
 
 fn main() {
     let matches = App::new("cargo-example")
@@ -21,6 +47,13 @@ fn main() {
 
 	let project = matches.value_of("project").unwrap();
 	let example_args: Vec<&str> = matches.values_of("additional_args").unwrap_or(Values::default()).collect();
+
+	let cache = try_load_from_cache(&project);
+
+	match cache {
+		Ok(repo) => println!("Good cache 👍"),
+		Err(e) => println!("Something happened 🤔 : {:?}", e)
+	}
 
 	let request_url = format!("https://crates.io/api/v1/crates/{}", project);
 	let crates_response = reqwest::get(&request_url).unwrap().text().unwrap();
