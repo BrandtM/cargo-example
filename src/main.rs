@@ -6,7 +6,7 @@ use error::*;
 use clap::{Arg, App, Values};
 use git2::Repository;
 use std::fs::DirBuilder;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 fn main() {
     let matches = App::new("cargo-example")
@@ -28,7 +28,7 @@ fn main() {
 	let response: Response;
 
 	if serialized_response.is_none() {
-		let serialized_error: Error = serde_json::from_str(&crates_response).unwrap();
+		let serialized_error: Error = serde_json::from_str(&crates_response).unwrap_or(Error::default());
 		dbg!(serialized_error);
 		return;
 	} else {
@@ -51,14 +51,12 @@ fn main() {
 		Repository::clone(&response.response_crate.repository, &example_path).unwrap();
 	}
 
-	let output = Command::new("cargo")
+	Command::new("cargo")
 		.arg("run")
 		.arg("--example")
 		.args(&example_args)
 		.current_dir(example_path)
-		.output()
+		.stdin(Stdio::piped())
+		.spawn()
 		.unwrap();
-
-	println!("stdout: {}", String::from_utf8(output.stdout).unwrap());
-	println!("stderr: {}", String::from_utf8(output.stderr).unwrap());
 }
