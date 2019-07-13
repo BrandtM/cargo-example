@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Response {
@@ -136,8 +136,7 @@ pub struct Version {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Features {
-}
+pub struct Features {}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct VersionLinks {
