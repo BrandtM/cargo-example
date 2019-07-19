@@ -41,6 +41,7 @@ mod error;
 mod response;
 
 use cache::*;
+use error::*;
 use clap::{App, AppSettings, Arg, Values, SubCommand};
 use download::*;
 use std::process::{Command, Stdio};
@@ -54,6 +55,12 @@ fn run_command(args: &Vec<&str>, path: &str) {
         .stdin(Stdio::piped())
         .spawn()
         .unwrap();
+}
+
+fn print_error(error: &Error) {
+	error.errors.iter().for_each(|element| {
+		println!("{}", element.detail);
+	})
 }
 
 fn main() {
@@ -91,7 +98,7 @@ fn main() {
         match download_result {
             Ok(example_path) => run_command(&example_args, &example_path),
             Err(e) => {
-                dbg!(e);
+                print_error(&e);
             }
         }
     }
