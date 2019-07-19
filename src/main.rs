@@ -1,4 +1,4 @@
-//! `cargo-example` is a easy-to-use example runner for cargo projects.
+//! `cargo-example` is an easy-to-use example runner for rust crates.
 //! 
 //! ## About
 //! 

@@ -1,5 +1,6 @@
 [package]
 name = "cargo-example"
+description = "An easy-to-use example runner for rust crates"
 version = "0.1.0"
 authors = ["Marius Brandt <marius.brandt@hotmail.com>"]
 edition = "2018"
