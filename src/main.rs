@@ -13,9 +13,9 @@
 //! 
 //! ## Usage
 //! 
-//! ### As a user
-//! 
-//! TBD. Test if cargo install works!
+//! 1. Run `cargo install cargo-example`
+//! 2. Run any examples with `cargo example ...args` where args is a list
+//! of arguments that will be forwarded to the crate's `--example` command
 //! 
 //! ### In development
 //! 
@@ -65,7 +65,7 @@ fn print_error(error: &Error) {
 
 fn main() {
     let matches = App::new("cargo-example")
-        .version("0.1")
+        .version("0.1.1")
         .bin_name("cargo")
         .settings(&[AppSettings::SubcommandRequired])
         .subcommand(SubCommand::with_name("example")

@@ -13,9 +13,9 @@ is abstracted away from the end user.
 
 # Usage
 
-## As a user
-
-TBD. Test if cargo install works!
+1. Run `cargo install cargo-example`
+2. Run any examples with `cargo example ...args` where args is a list
+of arguments that will be forwarded to the crate's `--example` command
 
 ## In development
 
