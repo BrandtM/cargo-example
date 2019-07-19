@@ -3,6 +3,9 @@ name = "cargo-example"
 version = "0.1.0"
 authors = ["Marius Brandt <marius.brandt@hotmail.com>"]
 edition = "2018"
+license = "MIT"
+repository = "https://github.com/BrandtM/cargo-example"
+readme = "README.md"
 
 [dependencies]
 reqwest = "0.9"
