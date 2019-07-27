@@ -47,14 +47,25 @@ use download::*;
 use std::process::{Command, Stdio};
 
 fn run_command(args: &Vec<&str>, path: &str) {
-    Command::new("cargo")
+    let mut process = Command::new("cargo")
         .arg("run")
         .arg("--example")
         .args(args)
         .current_dir(path)
         .stdin(Stdio::piped())
         .spawn()
-        .unwrap();
+        .expect("Could not spawn a cargo process.");
+	
+	let exit_code = process.wait().expect("Could not wait for cargo to exit.");
+	
+	if !exit_code.success() {
+		println!("Cargo did not exit successfully.");
+
+		match exit_code.code() {
+			Some(code) => println!("Status code: {}", code),
+			None => println!("Reason: Terminated by signal")
+		}
+	}
 }
 
 fn print_error(error: &Error) {
