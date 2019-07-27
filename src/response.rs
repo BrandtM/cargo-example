@@ -1,151 +1,102 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Response {
     #[serde(rename = "crate")]
     pub response_crate: Crate,
-
-    #[serde(rename = "versions")]
     pub versions: Vec<Version>,
+    pub keywords: Vec<Keyword>,
+    pub categories: Vec<Category>,
+}
 
-    #[serde(rename = "keywords")]
-    pub keywords: Vec<Option<serde_json::Value>>,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Category {
+    pub id: String,
+    pub category: String,
+    pub slug: String,
+    pub description: String,
+    pub created_at: String,
+    pub crates_cnt: i32,
+}
 
-    #[serde(rename = "categories")]
-    pub categories: Vec<Option<serde_json::Value>>,
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Keyword {
+    pub id: String,
+    pub keyword: String,
+    pub created_at: String,
+    pub crates_cnt: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Badge {
+    pub badge_type: String,
+    pub attributes: HashMap<String, Option<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Crate {
-    #[serde(rename = "id")]
     pub id: String,
-
-    #[serde(rename = "name")]
     pub name: String,
-
-    #[serde(rename = "updated_at")]
     pub updated_at: String,
-
-    #[serde(rename = "versions")]
-    pub versions: Vec<i64>,
-
-    #[serde(rename = "keywords")]
-    pub keywords: Vec<Option<serde_json::Value>>,
-
-    #[serde(rename = "categories")]
-    pub categories: Vec<Option<serde_json::Value>>,
-
-    #[serde(rename = "badges")]
-    pub badges: Vec<Option<serde_json::Value>>,
-
-    #[serde(rename = "created_at")]
+    pub versions: Option<Vec<i32>>,
+    pub keywords: Option<Vec<String>>,
+    pub categories: Option<Vec<String>>,
+    pub badges: Option<Vec<Badge>>,
     pub created_at: String,
-
-    #[serde(rename = "downloads")]
-    pub downloads: i64,
-
-    #[serde(rename = "recent_downloads")]
-    pub recent_downloads: i64,
-
-    #[serde(rename = "max_version")]
+    pub downloads: i32,
+    pub recent_downloads: Option<i64>,
     pub max_version: String,
-
-    #[serde(rename = "description")]
-    pub description: String,
-
-    #[serde(rename = "homepage")]
-    pub homepage: Option<serde_json::Value>,
-
-    #[serde(rename = "documentation")]
-    pub documentation: Option<serde_json::Value>,
-
-    #[serde(rename = "repository")]
-    pub repository: String,
-
-    #[serde(rename = "links")]
+    pub description: Option<String>,
+    pub homepage: Option<String>,
+    pub documentation: Option<String>,
+    pub repository: Option<String>,
     pub links: CrateLinks,
-
-    #[serde(rename = "exact_match")]
     pub exact_match: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CrateLinks {
-    #[serde(rename = "version_downloads")]
     pub version_downloads: String,
-
-    #[serde(rename = "versions")]
-    pub versions: Option<serde_json::Value>,
-
-    #[serde(rename = "owners")]
-    pub owners: String,
-
-    #[serde(rename = "owner_team")]
-    pub owner_team: String,
-
-    #[serde(rename = "owner_user")]
-    pub owner_user: String,
-
-    #[serde(rename = "reverse_dependencies")]
+    pub versions: Option<String>,
+    pub owners: Option<String>,
+    pub owner_team: Option<String>,
+    pub owner_user: Option<String>,
     pub reverse_dependencies: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Version {
-    #[serde(rename = "id")]
-    pub id: i64,
+    pub id: i32,
 
     #[serde(rename = "crate")]
     pub version_crate: String,
-
-    #[serde(rename = "num")]
     pub num: String,
-
-    #[serde(rename = "dl_path")]
     pub dl_path: String,
-
-    #[serde(rename = "readme_path")]
     pub readme_path: String,
-
-    #[serde(rename = "updated_at")]
     pub updated_at: String,
-
-    #[serde(rename = "created_at")]
     pub created_at: String,
-
-    #[serde(rename = "downloads")]
-    pub downloads: i64,
-
-    #[serde(rename = "features")]
-    pub features: Features,
-
-    #[serde(rename = "yanked")]
+    pub downloads: i32,
+    pub features: serde_json::Value,
     pub yanked: bool,
-
-    #[serde(rename = "license")]
-    pub license: String,
-
-    #[serde(rename = "links")]
+    pub license: Option<String>,
     pub links: VersionLinks,
-
-    #[serde(rename = "crate_size")]
-    pub crate_size: i64,
-
-    #[serde(rename = "published_by")]
-    pub published_by: Option<serde_json::Value>,
+    pub crate_size: Option<i32>,
+    pub published_by: Option<User>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Features {}
+pub struct User {
+    pub id: i32,
+    pub login: String,
+    pub name: Option<String>,
+    pub avatar: Option<String>,
+    pub url: Option<String>,
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct VersionLinks {
-    #[serde(rename = "dependencies")]
     pub dependencies: String,
-
-    #[serde(rename = "version_downloads")]
     pub version_downloads: String,
-
-    #[serde(rename = "authors")]
     pub authors: String,
 }
