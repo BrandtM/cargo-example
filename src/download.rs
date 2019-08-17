@@ -21,14 +21,14 @@ pub fn download(crate_name: &str) -> Result<String, Error> {
         response = serialized_response.unwrap();
     }
 
-	let repository: String;
+    let repository: String;
 
-	if response.response_crate.repository.is_none() {
-		let error = Error::from("Crate does not have a repository. Aborting!");
-		return Err(error);
-	} else {
-		repository = response.response_crate.repository.unwrap();
-	}
+    if response.response_crate.repository.is_none() {
+        let error = Error::from("Crate does not have a repository. Aborting!");
+        return Err(error);
+    } else {
+        repository = response.response_crate.repository.unwrap();
+    }
 
     let example_path = format!(
         "{}/.cargo-example/{}",
