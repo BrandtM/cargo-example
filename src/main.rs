@@ -21,7 +21,7 @@
 //! ## In development
 //! 
 //! Just use `cargo run example <crate> ...args`. It has to be done this way due
-//! to the way that 
+//! to the way that cargo finds its subcommands.
 //! 
 //! # Inspiration
 //! 
